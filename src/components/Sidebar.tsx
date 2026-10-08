@@ -65,16 +65,16 @@ export function Sidebar({ snapshot, workspaceId, activePaneId, onSelectWorkspace
               </Button>
             }
           />
-          <DropdownMenuContent align="end" className="dark w-52">
+          <DropdownMenuContent align="end" className="w-52">
             <DropdownMenuGroup>
-            <DropdownMenuLabel className="text-[11px] uppercase tracking-wider">Sessions</DropdownMenuLabel>
-            {sessions.map((s) => (
-              <DropdownMenuItem key={s.name} onClick={() => bridge.selectSession(s.name)} className="gap-2">
-                <span className={cn('size-1.5 rounded-full', s.running ? 'bg-emerald-400' : 'bg-neutral-700')} />
-                <span className={cn('truncate', !s.running && 'text-muted-foreground')}>{s.name}</span>
-                {s.name === session && <Check className="ml-auto size-3.5" />}
-              </DropdownMenuItem>
-            ))}
+              <DropdownMenuLabel className="text-[11px] uppercase tracking-wider">Sessions</DropdownMenuLabel>
+              {sessions.map((s) => (
+                <DropdownMenuItem key={s.name} onClick={() => bridge.selectSession(s.name)} className="gap-2">
+                  <span className={cn('size-1.5 shrink-0 rounded-full', s.running ? 'bg-emerald-400' : 'bg-neutral-700')} />
+                  <span className={cn('truncate', !s.running && 'text-muted-foreground')}>{s.name}</span>
+                  {s.name === session && <Check className="ml-auto size-3.5" />}
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -95,7 +95,7 @@ export function Sidebar({ snapshot, workspaceId, activePaneId, onSelectWorkspace
               onClick={() => onSelectWorkspace(w.workspace_id)}
               onKeyDown={(e) => e.key === 'Enter' && e.target === e.currentTarget && onSelectWorkspace(w.workspace_id)}
               className={cn(
-                'group flex h-8 cursor-default items-center gap-2 rounded-md px-2 text-[13px] text-neutral-400 outline-none hover:bg-white/[0.04] hover:text-neutral-200',
+                'group flex h-8 cursor-default items-center gap-2 rounded-md px-2 text-[13px] text-neutral-400 outline-none hover:bg-white/[0.04] hover:text-neutral-200 focus-visible:ring-1 focus-visible:ring-white/20',
                 w.workspace_id === workspaceId && 'bg-white/[0.07] text-neutral-100',
               )}
             >
@@ -104,7 +104,7 @@ export function Sidebar({ snapshot, workspaceId, activePaneId, onSelectWorkspace
               {w.worktree?.branch && (
                 <span className="truncate font-mono text-[10px] text-neutral-600">{w.worktree.branch}</span>
               )}
-              <span className="ml-auto font-mono text-[10px] text-neutral-600 group-hover:hidden">{w.tab_count}</span>
+              <span className="ml-auto font-mono text-[10px] text-neutral-600 group-focus-within:hidden group-hover:hidden pointer-coarse:hidden">{w.tab_count}</span>
               <WorkspaceMenu id={w.workspace_id} label={w.label} />
             </div>
           ))}
@@ -166,12 +166,12 @@ function WorkspaceMenu({ id, label }: { id: string; label: string }) {
       <DropdownMenuTrigger
         onClick={(e) => e.stopPropagation()}
         render={
-          <Button variant="ghost" size="icon-xs" className="ml-auto hidden group-hover:inline-flex aria-expanded:inline-flex">
+          <Button variant="ghost" size="icon-xs" className="ml-auto hidden group-focus-within:inline-flex group-hover:inline-flex aria-expanded:inline-flex pointer-coarse:inline-flex">
             <MoreHorizontal />
           </Button>
         }
       />
-      <DropdownMenuContent align="start" className="dark w-40" onClick={(e) => e.stopPropagation()}>
+      <DropdownMenuContent align="start" className="w-40" onClick={(e) => e.stopPropagation()}>
         <DropdownMenuItem
           onClick={async () => {
             const v = await promptDialog({ title: 'Rename workspace', fields: [{ name: 'label', label: 'Name', value: label }] })

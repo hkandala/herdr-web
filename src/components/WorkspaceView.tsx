@@ -5,6 +5,7 @@ import {
   Menu,
   Minimize2,
   Minus,
+  Pencil,
   MonitorSmartphone,
   MoreHorizontal,
   Plus,
@@ -131,7 +132,7 @@ function TabButton({ tab, active, onSelect }: { tab: TabInfo; active: boolean; o
           e.stopPropagation()
           void close()
         }}
-        className="grid size-4 place-items-center rounded text-neutral-600 opacity-0 group-hover:opacity-100 hover:bg-white/10 hover:text-neutral-300"
+        className="grid size-4 place-items-center rounded text-neutral-600 opacity-0 group-hover:opacity-100 hover:bg-white/10 hover:text-neutral-300 focus-visible:opacity-100 pointer-coarse:opacity-100"
       >
         <X className="size-3" />
       </button>
@@ -325,7 +326,7 @@ function PaneFrame({ pane, prefs, active, zoomed, canZoom, onActivate, onZoom, c
                   if (v) await act('pane.rename', { pane_id: pane.pane_id, label: v.label.trim() || null })
                 }}
               >
-                Rename
+                <Pencil /> Rename
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

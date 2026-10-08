@@ -79,7 +79,7 @@ function DialogBody({ req }: { req: Request }) {
 
   return (
     <Dialog open onOpenChange={(open) => !open && finish(false)}>
-      <DialogContent className="dark sm:max-w-sm">
+      <DialogContent className="sm:max-w-sm">
         <form
           className="grid gap-4"
           onSubmit={(e) => {

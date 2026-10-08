@@ -124,7 +124,11 @@ function Shell() {
         )}
       </div>
       <DialogHost />
-      <Notice notice={notice} />
+      {notice && (
+        <div className="fixed right-4 bottom-4 z-50 max-w-sm rounded-lg bg-neutral-900 px-3 py-2 text-xs text-neutral-300 shadow-lg ring-1 ring-white/10">
+          {notice.message}
+        </div>
+      )}
     </TooltipProvider>
   )
 }
@@ -178,20 +182,4 @@ function EmptyState(props: {
     )
   }
   return <div className="flex flex-1 flex-col items-center justify-center gap-3 p-6 text-center text-sm text-neutral-500">{body}</div>
-}
-
-function Notice({ notice }: { notice: { id: number; message: string } | null }) {
-  const [visible, setVisible] = useState<typeof notice>(null)
-  useEffect(() => {
-    if (!notice) return
-    setVisible(notice)
-    const t = setTimeout(() => setVisible(null), 4500)
-    return () => clearTimeout(t)
-  }, [notice])
-  if (!visible) return null
-  return (
-    <div className="fixed right-4 bottom-4 z-50 max-w-sm rounded-lg bg-neutral-900 px-3 py-2 text-xs text-neutral-300 shadow-lg ring-1 ring-white/10">
-      {visible.message}
-    </div>
-  )
 }

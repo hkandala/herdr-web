@@ -79,6 +79,6 @@ export function encodeKey(e: KeyboardEvent): KeyAction | null {
     return { keys: [modifierPrefix(e, false) + (shift ? 'shift+' : '') + name] }
   }
 
-  if (e.key.length >= 1 && [...e.key].length === 1) return { text: e.key }
+  if ([...e.key].length === 1) return { text: e.key }
   return null
 }

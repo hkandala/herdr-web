@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 // Nerd Font icons (powerline, devicons, ...) live in the Private Use Area, which no
 // system monospace font covers. The bundled symbols font sits in the fallback chain;
 // it must be loaded before the first paint because the canvas only rasterizes once.
-export const TERMINAL_FONT =
+const TERMINAL_FONT =
   'ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Symbols Nerd Font Mono", monospace'
 
 const ghosttyReady = Promise.all([
@@ -93,7 +93,7 @@ export function TerminalView({ paneId, mode, fontSize, bracketedPaste, active, o
     const cleanups: (() => void)[] = []
 
     const cellSize = () => {
-      const m = (term as any)?.renderer?.getMetrics?.() as { width: number; height: number } | undefined
+      const m = term?.renderer?.getMetrics()
       return m && m.width > 0 && m.height > 0 ? m : null
     }
 
@@ -337,7 +337,7 @@ export function TerminalView({ paneId, mode, fontSize, bracketedPaste, active, o
     <div
       ref={outerRef}
       onMouseDown={onActivate}
-      className={cn('relative flex h-full w-full items-center justify-center overflow-hidden bg-[#0c0c0d]', className)}
+      className={cn('relative flex h-full w-full items-center-safe justify-center-safe overflow-hidden bg-[#0c0c0d]', className)}
     >
       <div ref={hostRef} className="terminal-host [&_canvas]:block" />
       {closed && (

@@ -21,8 +21,8 @@ export interface BridgeState {
   session: string | null
   snapshot: SessionSnapshot | null
   error: string | null
-  /** Transient notices (failed input, rpc errors) for the toast area. */
-  notice: { id: number; message: string } | null
+  /** Transient notice (failed input, rpc errors) for the toast area; clears itself. */
+  notice: { message: string } | null
 }
 
 interface StreamSpec {
@@ -100,8 +100,11 @@ class Bridge {
   private onMessage(msg: ServerMsg) {
     switch (msg.t) {
       case 'hello':
+        // On a reconnect to the same session, keep the old snapshot so the views
+        // stay mounted; their streams reopen when the first snapshot arrives.
         this.ready = false
-        this.set({ sessions: msg.sessions, session: msg.session, snapshot: null, error: null })
+        if (msg.session === this.state.session) this.set({ sessions: msg.sessions })
+        else this.set({ sessions: msg.sessions, session: msg.session, snapshot: null, error: null })
         break
       case 'sessions':
         this.set({ sessions: msg.sessions })
@@ -135,7 +138,9 @@ class Bridge {
   }
 
   notify(message: string) {
-    this.set({ notice: { id: Date.now(), message } })
+    const notice = { message }
+    this.set({ notice })
+    setTimeout(() => this.state.notice === notice && this.set({ notice: null }), 4500)
   }
 
   selectSession(name: string) {

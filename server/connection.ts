@@ -246,12 +246,14 @@ export class Connection {
             entry.stale = true
             return
           }
-          if (entry.stale && !frame.full) {
+          if (entry.stale) {
             entry.stale = false
-            const { cols, rows } = entry.stream
-            entry.stream.dispose()
-            this.startStream(sid, pane, mode, { cols, rows }, false)
-            return
+            if (!frame.full) {
+              const { cols, rows } = entry.stream
+              entry.stream.dispose()
+              this.startStream(sid, pane, mode, { cols, rows }, false)
+              return
+            }
           }
           this.send({ t: 'frame', sid, ...frame })
         },

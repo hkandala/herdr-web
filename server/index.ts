@@ -91,10 +91,6 @@ async function serveStatic(req: http.IncomingMessage, res: http.ServerResponse) 
     return res.end()
   }
   if (!tokenOk(cookieToken(req))) return deny(res, 401)
-  if (url.pathname === '/api/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    return res.end(JSON.stringify({ ok: true }))
-  }
   if (!existsSync(DIST)) {
     res.writeHead(503, { 'Content-Type': 'text/plain' })
     return res.end('UI not built. Run `npm run build`, or use `npm run dev` and open the Vite URL.')

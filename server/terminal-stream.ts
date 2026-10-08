@@ -41,7 +41,7 @@ export function clampSize(n: unknown, fallback: number): number {
 }
 
 export class TerminalStream {
-  readonly opts: StreamOptions
+  private opts: StreamOptions
   cols: number
   rows: number
   private child: ChildProcess | null = null
@@ -54,10 +54,6 @@ export class TerminalStream {
     this.cols = opts.cols
     this.rows = opts.rows
     this.spawn()
-  }
-
-  get mode(): StreamMode {
-    return this.opts.mode
   }
 
   private spawn() {

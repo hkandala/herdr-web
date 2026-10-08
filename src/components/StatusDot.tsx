@@ -9,7 +9,7 @@ const STYLES: Record<AgentStatus, string> = {
   unknown: 'bg-neutral-700',
 }
 
-export const STATUS_LABEL: Record<AgentStatus, string> = {
+const STATUS_LABEL: Record<AgentStatus, string> = {
   working: 'Working',
   blocked: 'Needs input',
   done: 'Done',
